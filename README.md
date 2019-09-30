@@ -10,7 +10,8 @@ The reading of input register is implemented.
 
 Coils and discrete inputs are not yet implemented.
 
-##Usage
+## Usage
+
 The library consists of three files:
 
 - modbus_tcp.c
@@ -43,40 +44,50 @@ Return values:
 
 When receiving a read or write, the frame is parsed and the callback functions implemented by the user are called.
 
-##Configuration
+## Configuration
+
 In the file modbus_tcp_config.h you can find the following configuration options:
 
-###`MBT_USE_WEAK`
+### `MBT_USE_WEAK`
+
 Creates weak function prototypes for all callback functions. The macro `__week` can be adapted.
 
-###`MBT_SUPPORT_HOLDING_REG`
+### `MBT_SUPPORT_HOLDING_REG`
+
 Enables support for reading/writing holding register
 
-###`MBT_SUPPORT_INPUT_REG`
+### `MBT_SUPPORT_INPUT_REG`
+
 Enables support for reading input register
 
-###`MBT_SUPPORT_COILS`
+### `MBT_SUPPORT_COILS`
+
 Enables support for reading/writing coils. Currently not implemented and will throw a error during compling.
 
-###`MBT_SUPPORT_DISCRETE_INPUT`
+### `MBT_SUPPORT_DISCRETE_INPUT`
+
 Enables support for reading discrete inputs. Currently not implemented and will throw a error during compling.
 
-###`MBT_MALLOC` and `MBT_FREE`
+### `MBT_MALLOC` and `MBT_FREE`
+
 Definition for malloc and free on your system. E.g. in FreeRTOS you would use pvPortMalloc and vPortFree. 
 
 `MBT_MALLOC` is currently not used.
 
 `MBT_FREE` is used in the weak MBT_End.... function to release the `pAny` parameter (if not NULL). If no dynamic allocated memory is used, define `MBT_FREE` as empty.
 
-##Callbacks
+## Callbacks
 
-###Weak vs. External
+### Weak vs. External
+
 If `MBT_USE_WEAK` is defined, all necessary callbacks are defined with weak attribute. You can overwrite it by defining a strong version with the same prototype. Without the weak definition, all callbacks for a particular read or write process need to be implemented, even if empty.
 
-###Return values
+### Return values
+
 On success, all callbacks must return `MBT_OK`. Every other value will be interpreted as an error.
 
-###Reading a holding register
+### Reading a holding register
+
 After the read command was decoded, the callback 
 
 `mbt_ret_type MBT_BeginReadHoldingRegister(uint16_t u16_address, uint8_t slave, void **pAny);` 
@@ -91,7 +102,8 @@ which is called for every address. After the last address is read
 
 which has to release the memory reserved in BeginReadHoldingRegister. The weak definition performs the release. 
 
-###Reading an input register
+### Reading an input register
+
 Same procedure as reading a holding register with prototypes
 
 `mbt_ret_type MBT_BeginReadInputRegister(uint16_t u16_address, uint8_t slave, void **pAny);`
@@ -100,7 +112,8 @@ Same procedure as reading a holding register with prototypes
 
 `mbt_ret_type MBT_EndReadInputRegister(void **pAny);`
 
-###Writing a holding register
+### Writing a holding register
+
 Same procedure as reading a holding register with prototypes
 
 `mbt_ret_type MBT_BeginWriteHoldingRegister(uint16_t u16_address, uint8_t slave, void **pAny);`
@@ -111,10 +124,12 @@ The difference is, that the value is passed for writing in `uin16_t value`
 
 `mbt_ret_type MBT_EndWriteHoldingRegister(void **pAny);`
 
-###Coils and Descrete input
+### Coils and Descrete input
+
 The procedure is planed the same way, but not yet implemented.
 
-##Testing
+## Testing
+
 In the folder test is a small testsuite written with Catch2.
 
 Test status:

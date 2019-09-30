@@ -1,6 +1,6 @@
 # ModBUS TCP Handler
 
-##Functionality
+## Functionality
 
 The ModBUS TCP Handler library provides a handler for parsing a ModBUS TCP frame and calling user defined callback functions for reading and writing internal register.
 
